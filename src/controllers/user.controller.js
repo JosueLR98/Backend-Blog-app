@@ -1,9 +1,8 @@
 const userModel = require('./../models/user.model.js');
 exports.findAllUsers = async (req, res) => {
-  const time = req.requestTime;
   const users = await userModel.findAll({
     where: {
-      status: 'Available',
+      status: 'active',
     },
   });
   return res.status(200).json({
@@ -14,36 +13,13 @@ exports.findAllUsers = async (req, res) => {
     users,
   });
 };
-exports.createUser = async (req, res) => {
-  try {
-    const { name, email, password, role, status } = req.body;
-    const user = await userModel.create({
-      name: name,
-      email: email,
-      password: password,
-      role: role,
-      status: status,
-    });
-    return res.status(201).json({
-      OK: true,
-      message: 'User has been created!',
-      user,
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      status: 'fail',
-      message: 'Something went very wrong...!',
-    });
-  }
-};
 exports.findOneuser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await userModel.findOne({
       where: {
         id: id,
-        status: 'Available',
+        status: 'active',
       },
     });
     if (user === null) {
@@ -68,11 +44,11 @@ exports.findOneuser = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email } = req.body;
+    const { name } = req.body;
     const user = await userModel.findOne({
       where: {
         id: id,
-        status: 'Available',
+        status: 'active',
       },
     });
     if (!user) {
@@ -81,7 +57,7 @@ exports.updateUser = async (req, res) => {
         message: `User with id: ${id} not found`,
       });
     }
-    await user.update({ name, email });
+    await user.update({ name });
     return res.status(200).json({
       status: 'seccess',
       message: `User name and email has been updated`,
@@ -100,7 +76,7 @@ exports.deleteUser = async (req, res) => {
     const user = await userModel.findOne({
       where: {
         id: id,
-        status: 'Available',
+        status: 'active',
       },
     });
     if (!user) {
@@ -113,7 +89,6 @@ exports.deleteUser = async (req, res) => {
       status: 'successs',
       message: 'The user has been successfully removed!',
     });
-    await user.update({ status: 'Complete' });
   } catch (error) {
     console.log(error);
     return res.status(500).json({

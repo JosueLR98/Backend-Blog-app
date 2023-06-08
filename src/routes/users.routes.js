@@ -3,10 +3,7 @@ const express = require('express');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(userController.findAllUsers)
-  .post(userController.createUser);
+router.route('/').get(userController.findAllUsers);
 
 router
   .route('/:id')
