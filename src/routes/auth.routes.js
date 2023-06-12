@@ -1,8 +1,10 @@
-const authController = require('./../controllers/auth.controller');
 const express = require('express');
-const validationMiddleware = require('./../middleware/validations.middleware');
-const router = express.Router();
+//Controladores
+const authController = require('./../controllers/auth.controller');
+//Middlewares
+const validationMiddleware = require('../middlewares/validations.middleware');
 
+const router = express.Router();
 router.post(
   '/signup',
   validationMiddleware.createUserValidation,
